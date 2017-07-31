@@ -73,7 +73,7 @@ export class HeroFormComponent implements OnInit {
             ]],
             'email': ['', [
                 Validators.required,
-                forbiddenNameValidator()
+                forbiddenNameValidator(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)
             ]]
     });
 

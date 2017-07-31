@@ -52,7 +52,7 @@ var HeroFormComponent = (function () {
                 ]],
             'email': ['', [
                     forms_1.Validators.required,
-                    forbidden_name_directive_1.forbiddenNameValidator()
+                    forbidden_name_directive_1.forbiddenNameValidator(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)
                 ]]
         });
         this.heroForm.valueChanges
