@@ -1,0 +1,9 @@
+<h2>Add New Hero</h2>
+    <form [formGroup]="heroForm" >    
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" required minlength="4" maxlength="24">
+      </div>
+        
+      <button type="submit" class="btn btn-success">Submit</button> 
+    </form>
