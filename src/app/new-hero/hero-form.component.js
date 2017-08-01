@@ -13,8 +13,9 @@ var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var forbidden_name_directive_1 = require("../forbidden-name.directive");
 var HeroFormComponent = (function () {
-    function HeroFormComponent(fb) {
+    function HeroFormComponent(fb, heroService) {
         this.fb = fb;
+        this.heroService = heroService;
         this.submitted = false;
         this.formErrors = {
             'name': '',
@@ -35,8 +36,10 @@ var HeroFormComponent = (function () {
     }
     // Function
     HeroFormComponent.prototype.onSubmit = function () {
+        var _this = this;
         this.submitted = true;
         this.hero = this.heroForm.value;
+        this.heroService.getHeroes().then(function (heroes) { return _this.heroes = heroes; });
     };
     HeroFormComponent.prototype.ngOnInit = function () {
         this.buildForm();
@@ -52,7 +55,7 @@ var HeroFormComponent = (function () {
                 ]],
             'email': ['', [
                     forms_1.Validators.required,
-                    forbidden_name_directive_1.forbiddenNameValidator(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)
+                    forms_1.Validators.email
                 ]]
         });
         this.heroForm.valueChanges
@@ -81,9 +84,10 @@ var HeroFormComponent = (function () {
 HeroFormComponent = __decorate([
     core_1.Component({
         selector: 'hero-form',
-        template: "\n  <h2>Add New Hero</h2>\n  <form [formGroup]=\"heroForm\">\n    <div class=\"form-group\">\n        <label for=\"name\">Name</label>\n        <input type=\"text\" id=\"name\" class=\"form-control\"\n               formControlName=\"name\" required >\n        <div [hidden]=\"!formErrors.name\" class=\"alert alert-danger\">\n          {{ formErrors.name }}\n        </div>\n\n        <label for=\"email\">Email</label>\n        <input type=\"text\" id=\"email\" class=\"form-control\"\n               formControlName=\"email\" required>\n        <div [hidden]=\"!formErrors.email\" class=\"alert alert-danger\">\n          {{ formErrors.email }}\n        </div>\n\n    </div>\n    <button type=\"submit\" class=\"btn btn-success\">Submit</button> \n</form>\n",
+        template: "\n  <h2>Add New Hero</h2>\n  <form [formGroup]=\"heroForm\" (ngSubmit)=\"onSubmit()\">\n    <div class=\"form-group\">\n        <label for=\"name\">Name</label>\n        <input type=\"text\" id=\"name\" class=\"form-control\"\n               formControlName=\"name\" required >\n        <div [hidden]=\"!formErrors.name\" class=\"alert alert-danger\">\n          {{ formErrors.name }}\n        </div>\n\n        <label for=\"email\">Email</label>\n        <input type=\"text\" id=\"email\" class=\"form-control\"\n               formControlName=\"email\" required>\n        <div [hidden]=\"!formErrors.email\" class=\"alert alert-danger\">\n          {{ formErrors.email }}\n        </div>\n\n    </div>\n    <button type=\"submit\" class=\"btn btn-success\" [disabled]=\"!heroForm.valid\">Submit</button> \n</form>\n  ",
+        providers: [HeroService]
     }),
-    __metadata("design:paramtypes", [forms_1.FormBuilder])
+    __metadata("design:paramtypes", [forms_1.FormBuilder, Object])
 ], HeroFormComponent);
 exports.HeroFormComponent = HeroFormComponent;
 //# sourceMappingURL=hero-form.component.js.map

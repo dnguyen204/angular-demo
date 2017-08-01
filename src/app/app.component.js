@@ -15,7 +15,7 @@ var AppComponent = (function () {
     function AppComponent(heroService) {
         this.heroService = heroService;
         this.title = 'List of Heroes';
-        this.addHero = false;
+        this.addNewClick = false;
     }
     AppComponent.prototype.getHeroes = function () {
         var _this = this;
@@ -27,15 +27,16 @@ var AppComponent = (function () {
     AppComponent.prototype.onSelect = function (hero) {
         this.selectedHero = hero;
     };
-    AppComponent.prototype.addNewHero = function (show) {
-        this.addHero = show;
+    // tslint:disable-next-line:one-line
+    AppComponent.prototype.addNew = function (show) {
+        this.addNewClick = show;
     };
     return AppComponent;
 }());
 AppComponent = __decorate([
     core_1.Component({
         selector: 'my-app',
-        template: "      \n    <h1>{{title}}</h1>\n    <h2>My Heroes</h2>\n    <div class=\"herolist\">\n      <ul class=\"heroes\">\n        <li *ngFor=\"let hero of heroes\"\n          [class.selected]=\"hero === selectedHero\"\n          (click)=\"onSelect(hero); addNewHero(false);\">\n          <span class=\"badge\">{{hero.id}}</span> {{hero.name}}\n        </li>\n      </ul>\n      <button class=\"btn btn-success\" (click)=\"addNewHero(true)\" [disabled]=\"addHero\">Add Hero</button>\n    </div>\n    <div class=\"heroform\">\n      <div [hidden]=\"addHero\">\n        <hero-detail [hero] = selectedHero></hero-detail>\n      </div>\n      <div [hidden]=\"!addHero\">\n        <hero-form></hero-form>\n      </div>\n    </div>\n  ",
+        template: "      \n    <h1>{{title}}</h1>\n    <h2>My Heroes</h2>\n    <div class=\"herolist\">\n      <ul class=\"heroes\">\n        <li *ngFor=\"let hero of heroes\"\n          [class.selected]=\"hero === selectedHero\"\n          (click)=\"onSelect(hero); addNew(false);\">\n          <span class=\"badge\">{{hero.id}}</span> {{hero.name}}\n        </li>\n      </ul>\n      <button class=\"btn btn-success\" (click)=\"addNew(true)\" [disabled]=\"addNewClick\">Add Hero</button>\n    </div>\n    <div class=\"heroform\">\n      <div [hidden]=\"addNewClick\">\n        <hero-detail [hero] = selectedHero></hero-detail>\n      </div>\n      <div [hidden]=\"!addNewClick\">\n        <hero-form></hero-form>\n      </div>\n    </div>\n  ",
         styles: ["\n    .selected {\n      background-color: #CFD8DC !important;\n      color: white;\n    }\n    .heroes {\n      margin: 0 0 2em 0;\n      list-style-type: none;\n      padding: 0;\n      width: 15em;\n    }\n    .heroes li {\n      cursor: pointer;\n      position: relative;\n      left: 0;\n      background-color: #EEE;\n      margin: .5em;\n      padding: .3em 0;\n      height: 1.6em;\n      border-radius: 4px;\n    }\n    .heroes li.selected:hover {\n      background-color: #BBD8DC !important;\n      color: white;\n    }\n    .heroes li:hover {\n      color: #607D8B;\n      background-color: #DDD;\n      left: .1em;\n    }\n    .heroes .text {\n      position: relative;\n      top: -3px;\n    }\n    .heroes .badge {\n      display: inline-block;\n      font-size: small;\n      color: white;\n      padding: 0.8em 0.7em 0 0.7em;\n      background-color: #607D8B;\n      line-height: 1em;\n      position: relative;\n      left: -1px;\n      top: -4px;\n      height: 1.8em;\n      margin-right: .8em;\n      border-radius: 4px 0 0 4px;    \n    }\n    .herolist {\n      float: left\n    }\n    .heroform {\n      float: left;\n      margin-top: -20px;\n      margin-left: 40px;\n    }\n  "],
         providers: [hero_service_1.HeroService]
     }),

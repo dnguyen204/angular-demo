@@ -22,6 +22,10 @@ var HeroService = (function () {
             setTimeout(function () { return resolve(_this.getHeroes()); }, 2000);
         });
     };
+    // tslint:disable-next-line:one-line
+    HeroService.prototype.addHero = function (lstHero, hero) {
+        return lstHero.push(hero);
+    };
     return HeroService;
 }());
 HeroService = __decorate([

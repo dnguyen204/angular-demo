@@ -16,4 +16,9 @@ export class HeroService {
       setTimeout(() => resolve(this.getHeroes()), 2000);
     });
   }
+
+  // tslint:disable-next-line:one-line
+  addHero(lstHero: Hero[], hero: Hero){
+    return lstHero.push(hero);
+  }
 }

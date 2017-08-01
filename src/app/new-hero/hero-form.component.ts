@@ -1,14 +1,25 @@
-import { Component, OnInit }                  from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Hero } from '../hero';
+import {
+    Component,
+    OnInit
+} from '@angular/core';
+import {
+    FormGroup,
+    FormBuilder,
+    Validators
+} from '@angular/forms';
+import {
+    Hero
+} from '../hero';
 
-import { forbiddenNameValidator } from '../forbidden-name.directive';
+import {
+    forbiddenNameValidator
+} from '../forbidden-name.directive';
 
 @Component({
-  selector: 'hero-form',
-  template: `
+    selector: 'hero-form',
+    template: `
   <h2>Add New Hero</h2>
-  <form [formGroup]="heroForm">
+  <form [formGroup]="heroForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" id="name" class="form-control"
@@ -25,25 +36,26 @@ import { forbiddenNameValidator } from '../forbidden-name.directive';
         </div>
 
     </div>
-    <button type="submit" class="btn btn-success">Submit</button> 
+    <button type="submit" class="btn btn-success" [disabled]="!heroForm.valid">Submit</button> 
 </form>
-`,
-
+  `,
+    providers: [HeroService]
 })
 export class HeroFormComponent implements OnInit {
     // Variables
-    hero: Hero[];
+    hero: Hero;
+    heroes: Hero[];
     submitted = false;
     heroForm: FormGroup;
     formErrors = {
-      'name': '',
-      'email': ''
+        'name': '',
+        'email': ''
     };
     validationMessages = {
         'name': {
-            'required':      'Name is required.',
-            'minlength':     'Name must be at least 4 characters long.',
-            'maxlength':     'Name cannot be more than 24 characters long.',
+            'required': 'Name is required.',
+            'minlength': 'Name must be at least 4 characters long.',
+            'maxlength': 'Name cannot be more than 24 characters long.',
             'forbiddenName': 'Someone named "Dung" cannot be a hero.'
         },
         'email': {
@@ -52,12 +64,16 @@ export class HeroFormComponent implements OnInit {
         }
 
     };
-    constructor(private fb: FormBuilder) { }
+    constructor(
+        private fb: FormBuilder,
+        private heroService: HeroService
+    ) {}
 
     // Function
     onSubmit() {
         this.submitted = true;
         this.hero = this.heroForm.value;
+        this.heroService.getHeroes().then(heroes => this.heroes = heroes);        
     }
 
     ngOnInit(): void {
@@ -73,28 +89,29 @@ export class HeroFormComponent implements OnInit {
             ]],
             'email': ['', [
                 Validators.required,
-                forbiddenNameValidator(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)
+                Validators.email
             ]]
-    });
+        });
 
-    this.heroForm.valueChanges
-      .subscribe(data => this.onValueChanged(data));
+        this.heroForm.valueChanges
+            .subscribe(data => this.onValueChanged(data));
 
-    this.onValueChanged(); // (re)set validation messages now
-  }
+        this.onValueChanged(); // (re)set validation messages now
+    }
 
-  onValueChanged(data?: any){
-      if (!this.heroForm) { return; }
-      const form = this.heroForm;
-      for (const field in this.formErrors) {
-          // clear previous error message (if any)
-          this.formErrors[field] = '';
-          const control = form.get(field);
-          
-          if (control && control.dirty && !control.valid) {
-              const messages = this.validationMessages[field];
-              for (const key in control.errors) {
-                  this.formErrors[field] += messages[key] + ' ';
+    onValueChanged(data ?: any) {
+        if (!this.heroForm) {
+            return;
+        }
+        const form = this.heroForm;
+        for (const field in this.formErrors) {
+            // clear previous error message (if any)
+            this.formErrors[field] = '';
+            const control = form.get(field);
+            if (control && control.dirty && !control.valid) {
+                const messages = this.validationMessages[field];
+                for (const key in control.errors) {
+                    this.formErrors[field] += messages[key] + ' ';
                 }
             }
         }

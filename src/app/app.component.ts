@@ -12,17 +12,17 @@ import { HeroService } from './hero.service';
       <ul class="heroes">
         <li *ngFor="let hero of heroes"
           [class.selected]="hero === selectedHero"
-          (click)="onSelect(hero); addNewHero(false);">
+          (click)="onSelect(hero); addNew(false);">
           <span class="badge">{{hero.id}}</span> {{hero.name}}
         </li>
       </ul>
-      <button class="btn btn-success" (click)="addNewHero(true)" [disabled]="addHero">Add Hero</button>
+      <button class="btn btn-success" (click)="addNew(true)" [disabled]="addNewClick">Add Hero</button>
     </div>
     <div class="heroform">
-      <div [hidden]="addHero">
+      <div [hidden]="addNewClick">
         <hero-detail [hero] = selectedHero></hero-detail>
       </div>
-      <div [hidden]="!addHero">
+      <div [hidden]="!addNewClick">
         <hero-form></hero-form>
       </div>
     </div>
@@ -90,7 +90,7 @@ export class AppComponent implements OnInit {
   title = 'List of Heroes';
   heroes: Hero[];
   selectedHero: Hero;
-  addHero = false;
+  addNewClick = false;
 
   constructor(private heroService: HeroService) { }
 
@@ -106,7 +106,8 @@ export class AppComponent implements OnInit {
     this.selectedHero = hero;
   }
 
-  addNewHero(show: boolean): void{
-    this.addHero = show;
+  // tslint:disable-next-line:one-line
+  addNew(show: boolean): void{
+    this.addNewClick = show;
   }
 }
